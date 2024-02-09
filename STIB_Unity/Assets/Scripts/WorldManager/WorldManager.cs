@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class WorldManager : MonoBehaviour
 {
     public static WorldManager instance;
-    private List<Voxel> voxels;
+    private List<Voxel> voxels = new List<Voxel>();
 
     public delegate void OnAddVoxel();
     public delegate void OnRemoveVoxel();
@@ -27,7 +27,7 @@ public class WorldManager : MonoBehaviour
     }
     
     void Start() {
-
+        
     }
     
     public static void RegisterAddVoxelEvent(OnAddVoxel a) {
@@ -41,10 +41,12 @@ public class WorldManager : MonoBehaviour
     }
  
  
-    public static List<Voxel> GetVoxel(int index) { return instance.voxels[index]; }
     public static List<Voxel> GetVoxels() { return instance.voxels; }
+
+    public static Voxel GetVoxel(int i) { return instance.voxels[i]; }
     public static void AddVoxel(Voxel v) {
         instance.voxels.Add(v);
+        instance.onAddVoxel?.Invoke();
     }
 }
 
