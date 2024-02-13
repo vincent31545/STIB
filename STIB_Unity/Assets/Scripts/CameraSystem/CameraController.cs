@@ -4,20 +4,38 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public float cameraSpeed = 6;
-    public float sprintSpeed = 12;
+    public float baseSpeed = 10;
+    public float shiftSpeed = 20;
+    [Space]
+    public float lookSensitivity = 10;
 
-    private float speed;
-    private Vector2 input;
+    private float moveSpeed;
+    private Vector2 lookInput;
+    private Vector2 moveInput;
+
+    private void Start() {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
     private void Update() {
-        // speed = input.GetKey(KeyCode.LeftShift) ? sprintSpeed : cameraSpeed;
-        speed = sprintSpeed;
+        moveSpeed = baseSpeed;
 
-        input.x = Input.GetAxis("Horizontal");
-        input.y = Input.GetAxis("Vertical");
-        input.Normalize();
+        lookInput.x = Input.GetAxisRaw("Mouse X");
+        lookInput.y = Input.GetAxisRaw("Mouse Y");
+        moveInput.x = Input.GetAxis("Horizontal");
+        moveInput.y = Input.GetAxis("Vertical");
 
-        transform.position += speed * Time.deltaTime * (input.x * transform.right + input.y * transform.forward);
+        ProcessRotation();
+        ProcessMovement();
+    }
+
+    private void ProcessRotation() {
+        transform.eulerAngles += (Vector3.up * lookInput.x - Vector3.right * lookInput.y) * Time.deltaTime * lookSensitivity * 40;
+    }
+    private void ProcessMovement() {
+        if (Input.GetKey(KeyCode.LeftShift))
+            moveSpeed = shiftSpeed;
+
+        transform.position += (moveInput.x * transform.right + moveInput.y * transform.forward) * Time.deltaTime * moveSpeed;
     }
 }

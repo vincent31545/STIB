@@ -18,9 +18,9 @@ public class VoxelRenderer : MonoBehaviour
         WorldManager.RegisterRemoveVoxelEvent(RefreshMatrices);
         WorldManager.RegisterClearVoxelsEvent(RefreshMatrices);
 
-        for (int x = 0; x < 10; x++)
-            for (int z = 0; z < 10; z++)
-                WorldManager.AddVoxel(new Voxel(VOXEL_TYPE.TEST, new Vector3(x * 2, 0, z * 2)));
+        for (int x = 0; x < 50; x++)
+            for (int z = 0; z < 50; z++)
+                WorldManager.AddVoxel(new Voxel(VOXEL_TYPE.TEST, new Vector3(x * 2 - 50, 3, z * 2 - 50)));
     }
 
     private void Update() {
