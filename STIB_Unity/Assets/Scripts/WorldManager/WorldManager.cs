@@ -39,14 +39,23 @@ public class WorldManager : MonoBehaviour
     public static void RegisterClearVoxelsEvent(OnClearVoxels a) {
         instance.onClearVoxels += a;
     }
+
+    public static Vector3 GetGridPos(Vector3 position) {
+        position.x = Mathf.Floor(position.x);
+        position.y = Mathf.Floor(position.y);
+        position.z = Mathf.Floor(position.z);
+        return position;
+    }
  
  
-    public static List<Voxel> GetVoxels() { return instance.voxels; }
+    public static int GetVoxelCount() { return instance.voxels.Count; }
 
     public static Voxel GetVoxel(int i) { return instance.voxels[i]; }
-    public static void AddVoxel(Voxel v) {
+    public static Voxel AddVoxel(VOXEL_TYPE type, Vector3 position) {
+        Voxel v = new Voxel(type, position);
         instance.voxels.Add(v);
         instance.onAddVoxel?.Invoke();
+        return v;
     }
 }
 
