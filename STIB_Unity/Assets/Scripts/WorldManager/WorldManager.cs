@@ -27,7 +27,9 @@ public class WorldManager : MonoBehaviour
     }
     
     void Start() {
-        
+        for (int x = 0; x < 50; x++)
+            for (int z = 0; z < 50; z++)
+                AddVoxel(new Voxel(VOXEL_TYPE.TEST, new Vector3(x * 2 - 50, 3, z * 2 - 50)));
     }
     
     public static void RegisterAddVoxelEvent(OnAddVoxel a) {
