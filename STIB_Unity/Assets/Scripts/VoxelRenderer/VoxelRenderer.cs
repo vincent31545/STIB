@@ -25,9 +25,9 @@ public class VoxelRenderer : MonoBehaviour
     }
 
     private void RefreshMatrices() {
-        voxelMatrices = new Matrix4x4[WorldManager.GetVoxels().Count];
+        voxelMatrices = new Matrix4x4[WorldManager.GetVoxelCount()];
         for (int i = 0; i < voxelMatrices.Length; i++) {
-            voxelMatrices[i] = Matrix4x4.TRS(WorldManager.GetVoxel(i).position, Quaternion.identity, Vector3.one);
+            voxelMatrices[i] = Matrix4x4.TRS(WorldManager.GetVoxel(i).position + (Vector3.up + Vector3.forward + Vector3.right) * 0.5f, Quaternion.identity, Vector3.one);
         }
     }
 }
