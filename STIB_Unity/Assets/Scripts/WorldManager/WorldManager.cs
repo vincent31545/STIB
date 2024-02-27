@@ -67,6 +67,11 @@ public class WorldManager : MonoBehaviour
         instance.onAddVoxel?.Invoke();
         return v;
     }
+    public static Voxel RemoveVoxel(Voxel v) {
+        instance.voxels.Remove(v);
+        instance.onRemoveVoxel?.Invoke();
+        return v;
+    }
 }
 
 /*
