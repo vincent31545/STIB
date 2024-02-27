@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,8 +62,41 @@ public class WorldManager : MonoBehaviour
         return null;
     }
 
+    public static void UpdateAllSignals() {
+        for (int i = 0; i < GetVoxelCount(); ++i) {
+            instance.voxels[i].UpdateSignal();
+        }
+    }
+
     public static Voxel AddVoxel(VOXEL_TYPE type, Vector3Int position) {
-        Voxel v = new Voxel(type, position);
+
+        // x, -x, y, -y, z, -z
+        var adj = new Voxel[6] {null, null, null, null, null, null};
+
+        /*
+            HAHAHA REVEL AT THE GLORY OF THIS CODE REID
+        */
+
+        for (int i = 0; i < GetVoxelCount(); ++i) {
+            bool xdiff = Math.Abs(position.x - instance.voxels[i].position.x) == 1;
+            bool ydiff = Math.Abs(position.y - instance.voxels[i].position.y) == 1;
+            bool zdiff = Math.Abs(position.z - instance.voxels[i].position.z) == 1;
+            if (xdiff && !ydiff && !zdiff) {
+                int index = ((position.x - instance.voxels[i].position.x) == 1) ? 0 : 1;
+                adj[index] = instance.voxels[i]; 
+            } 
+            else if (!xdiff && ydiff && !zdiff) {
+                int index = ((position.y - instance.voxels[i].position.y) == 1) ? 0 : 1;
+                adj[index] = instance.voxels[i+2]; 
+            } 
+            else if (!xdiff && !ydiff && zdiff) {
+                int index = ((position.z - instance.voxels[i].position.z) == 1) ? 0 : 1;
+                adj[index] = instance.voxels[i+4];               
+            }
+        }
+
+        Voxel v = new Voxel(type, position, adj);
+
         instance.voxels.Add(v);
         instance.onAddVoxel?.Invoke();
         return v;
@@ -73,14 +107,3 @@ public class WorldManager : MonoBehaviour
         return v;
     }
 }
-
-/*
-
-GetVoxels list
-private voxel list
-Static public reference to World Manager
-static functions addvoxel removevoxel clearvoxels 
-add and removee versions that take vector3 position, grid index vector3
-3 delegate voids callbacks called onremove onadd onclear
-
-*/
