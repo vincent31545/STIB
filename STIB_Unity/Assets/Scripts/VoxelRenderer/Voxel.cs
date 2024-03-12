@@ -37,6 +37,8 @@ public class Voxel
     public Vector3Int position;
     public Voxel[] adjacent;
     public bool[] signals;
+
+    public virtual Color GetVoxelColor() => Color.white;
 }
 
 
