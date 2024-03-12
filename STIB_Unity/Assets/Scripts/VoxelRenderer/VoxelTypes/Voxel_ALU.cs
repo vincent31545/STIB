@@ -8,5 +8,5 @@ public class Voxel_ALU : Voxel {
         Debug.Log("ALU");
     }
 
-    public override Color GetVoxelColor() => Color.orange;
+    public override Color GetVoxelColor() => Color.cyan;
 }
