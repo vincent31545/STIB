@@ -6,11 +6,9 @@ using UnityEngine;
 
 public class Voxel
 {
-    public Voxel(VOXEL_TYPE _type, Vector3Int _pos, Voxel[] _adjacent) {
+    public Voxel(VOXEL_TYPE _type, Vector3Int _pos) {
         type = _type;
         position = _pos;
-        Array.Copy(_adjacent, adjacent, _adjacent.Length);
-        signals = new bool[6] {false, false, false, false, false, false};
     }
     public bool RemoveAdjacent(int pos) {
 

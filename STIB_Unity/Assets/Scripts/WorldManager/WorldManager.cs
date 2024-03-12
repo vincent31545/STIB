@@ -63,20 +63,20 @@ public class WorldManager : MonoBehaviour
     }
 
     public static void UpdateAllSignals() {
-        for (int i = 0; i < GetVoxelCount(); ++i) {
-            instance.voxels[i].UpdateSignal();
-        }
+        //for (int i = 0; i < GetVoxelCount(); ++i) {
+            //instance.voxels[i].UpdateSignal();
+        //}
     }
 
     public static Voxel AddVoxel(VOXEL_TYPE type, Vector3Int position) {
 
         // x, -x, y, -y, z, -z
-        var adj = new Voxel[6] {null, null, null, null, null, null};
+        //var adj = new Voxel[6];
 
         /*
             HAHAHA REVEL AT THE GLORY OF THIS CODE REID
         */
-
+        /*
         for (int i = 0; i < GetVoxelCount(); ++i) {
             bool xdiff = Math.Abs(position.x - instance.voxels[i].position.x) == 1;
             bool ydiff = Math.Abs(position.y - instance.voxels[i].position.y) == 1;
@@ -94,8 +94,8 @@ public class WorldManager : MonoBehaviour
                 adj[index] = instance.voxels[i+4];               
             }
         }
-
-        Voxel v = new Voxel(type, position, adj);
+        */
+        Voxel v = new Voxel(type, position);
 
         instance.voxels.Add(v);
         instance.onAddVoxel?.Invoke();
