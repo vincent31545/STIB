@@ -42,4 +42,10 @@ public class Voxel
 
 public enum VOXEL_TYPE {
     None = -1,
+    NOT = 0,
+    OR = 1,
+    AND = 2,
+    XOR = 3,
+    XAND = 4,
+    ALU = 5,
 }
