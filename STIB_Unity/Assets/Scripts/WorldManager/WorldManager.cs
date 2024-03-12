@@ -16,11 +16,11 @@ public class WorldManager : MonoBehaviour
     public delegate void OnAddVoxel();
     public delegate void OnRemoveVoxel();
     public delegate void OnClearVoxels();
-
     private OnAddVoxel onAddVoxel;
     private OnRemoveVoxel onRemoveVoxel;
     private OnClearVoxels onClearVoxels;
     private int counter = 0;
+    public static int blockType = -1;
 
     void Awake() {
         if (instance != null) {
@@ -102,6 +102,38 @@ public class WorldManager : MonoBehaviour
             }
         }
         Voxel v = new Voxel(type, position, adj);
+        switch (blockType) {
+            case 5:
+                print ("5 ALU");
+                v = new Voxel_ALU(type, position, adj);
+                break;
+            case 4:
+                print ("4 XAND");
+                v = new Voxel_XAND(type, position, adj);
+                break;
+            case 3:
+                print ("3 XOR");
+                v = new Voxel_XOR(type, position, adj);
+                break;
+            case 2:
+                print ("2 AND");
+                v = new Voxel_AND(type, position, adj);
+                break;
+            case 1:
+                print ("1 OR");
+                v = new Voxel_OR(type, position, adj);
+                break;
+            case 0:
+                print ("0 NOT");
+                v = new Voxel_NOT(type, position, adj);
+                break;
+            case -1:
+                print ("-1 NONE");
+                break;
+            default:
+                print ("Incorrect intelligence level.");
+                break;
+        }
 
         instance.voxels.Add(v);
         instance.onAddVoxel?.Invoke();
