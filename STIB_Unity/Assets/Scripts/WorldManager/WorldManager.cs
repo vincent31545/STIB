@@ -20,6 +20,7 @@ public class WorldManager : MonoBehaviour
     private OnAddVoxel onAddVoxel;
     private OnRemoveVoxel onRemoveVoxel;
     private OnClearVoxels onClearVoxels;
+    private int counter = 0;
 
     void Awake() {
         if (instance != null) {
@@ -29,11 +30,18 @@ public class WorldManager : MonoBehaviour
             instance = this;
         }
     }
-    
+
     void Start() {
         for (int x = 0; x < 50; x++)
             for (int z = 0; z < 50; z++)
                 AddVoxel(VOXEL_TYPE.None, new Vector3Int(x, -1, z));
+    }
+
+    void Update() {
+        counter++;
+        if (counter >= 60) {
+            UpdateAllSignals();
+        } 
     }
     
     public static void RegisterAddVoxelEvent(OnAddVoxel a) {
@@ -63,20 +71,19 @@ public class WorldManager : MonoBehaviour
     }
 
     public static void UpdateAllSignals() {
-        //for (int i = 0; i < GetVoxelCount(); ++i) {
-            //instance.voxels[i].UpdateSignal();
-        //}
+        for (int i = 0; i < GetVoxelCount(); ++i) {
+            instance.voxels[i].UpdateSignal();
+        }
     }
 
     public static Voxel AddVoxel(VOXEL_TYPE type, Vector3Int position) {
 
         // x, -x, y, -y, z, -z
-        //var adj = new Voxel[6];
+        var adj = new Voxel[6];
 
         /*
             HAHAHA REVEL AT THE GLORY OF THIS CODE REID
         */
-        /*
         for (int i = 0; i < GetVoxelCount(); ++i) {
             bool xdiff = Math.Abs(position.x - instance.voxels[i].position.x) == 1;
             bool ydiff = Math.Abs(position.y - instance.voxels[i].position.y) == 1;
@@ -87,15 +94,14 @@ public class WorldManager : MonoBehaviour
             } 
             else if (!xdiff && ydiff && !zdiff) {
                 int index = ((position.y - instance.voxels[i].position.y) == 1) ? 0 : 1;
-                adj[index] = instance.voxels[i+2]; 
+                adj[index+2] = instance.voxels[i]; 
             } 
             else if (!xdiff && !ydiff && zdiff) {
                 int index = ((position.z - instance.voxels[i].position.z) == 1) ? 0 : 1;
-                adj[index] = instance.voxels[i+4];               
+                adj[index+4] = instance.voxels[i];               
             }
         }
-        */
-        Voxel v = new Voxel(type, position);
+        Voxel v = new Voxel(type, position, adj);
 
         instance.voxels.Add(v);
         instance.onAddVoxel?.Invoke();
