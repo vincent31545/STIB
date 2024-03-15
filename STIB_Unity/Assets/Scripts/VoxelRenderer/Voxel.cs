@@ -14,7 +14,6 @@ public class Voxel
         for (int i = 0; i < _adjacent.Length; i++) {
             if (_adjacent[i] != null) {
                 adjacent[i] = _adjacent[i];
-                Debug.Log(adjacent[i].position);
             }
         }
         signals = new bool[6] {false, false, false, false, false, false};
