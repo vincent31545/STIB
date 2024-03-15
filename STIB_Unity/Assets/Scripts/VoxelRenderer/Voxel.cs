@@ -10,6 +10,7 @@ public class Voxel
         type = _type;
         position = _pos;
         adjacent = new Voxel[6];
+        forward = 0; 
         for (int i = 0; i < _adjacent.Length; i++) {
             if (_adjacent[i] != null) {
                 adjacent[i] = _adjacent[i];
@@ -30,12 +31,19 @@ public class Voxel
         return true;
     }
 
+    public void SendSignal(Boolean sig) {
+        signals[forward] = sig;
+    }
+
     public virtual void UpdateSignal() {}
 
     public VOXEL_TYPE type;
     public Vector3Int position;
     public Voxel[] adjacent;
     public bool[] signals;
+
+    // x, -x, y, -y, z, -z
+    public int forward;
 
     public virtual Color GetVoxelColor() => Color.white;
 }
@@ -46,7 +54,7 @@ public enum VOXEL_TYPE {
     NOT = 0,
     OR = 1,
     AND = 2,
-    XOR = 3,
-    XAND = 4,
-    ALU = 5,
+    WIRE = 3,
+    SEND = 4,
+    LED = 5
 }
