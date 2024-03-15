@@ -20,7 +20,6 @@ public class WorldManager : MonoBehaviour
     private OnRemoveVoxel onRemoveVoxel;
     private OnClearVoxels onClearVoxels;
     private int counter = 0;
-    public static int blockType = -1;
 
     void Awake() {
         if (instance != null) {
@@ -32,9 +31,11 @@ public class WorldManager : MonoBehaviour
     }
 
     void Start() {
+        Application.targetFrameRate = 60;
+
         for (int x = 0; x < 50; x++)
             for (int z = 0; z < 50; z++)
-                AddVoxel(VOXEL_TYPE.None, new Vector3Int(x, -1, z));
+                AddVoxel(VOXEL_TYPE.None, new Vector3Int(x, -1, z), -1);
     }
 
     void Update() {
@@ -76,14 +77,10 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    public static Voxel AddVoxel(VOXEL_TYPE type, Vector3Int position) {
-
-        // x, -x, y, -y, z, -z
+    public static Voxel AddVoxel(VOXEL_TYPE type, Vector3Int position, int blockType) {
         var adj = new Voxel[6];
 
-        /*
-            HAHAHA REVEL AT THE GLORY OF THIS CODE REID
-        */
+        // Set neighbors
         for (int i = 0; i < GetVoxelCount(); ++i) {
             bool xdiff = Math.Abs(position.x - instance.voxels[i].position.x) == 1;
             bool ydiff = Math.Abs(position.y - instance.voxels[i].position.y) == 1;
@@ -101,37 +98,29 @@ public class WorldManager : MonoBehaviour
                 adj[index+4] = instance.voxels[i];               
             }
         }
-        Voxel v = new Voxel(type, position, adj);
+
+        Voxel v;
         switch (blockType) {
-            case 5:
-                print ("5 ALU");
-                v = new Voxel_ALU(type, position, adj);
-                break;
-            case 4:
-                print ("4 XAND");
-                v = new Voxel_XAND(type, position, adj);
-                break;
-            case 3:
-                print ("3 XOR");
-                v = new Voxel_XOR(type, position, adj);
-                break;
-            case 2:
-                print ("2 AND");
-                v = new Voxel_AND(type, position, adj);
-                break;
-            case 1:
-                print ("1 OR");
-                v = new Voxel_OR(type, position, adj);
-                break;
             case 0:
-                print ("0 NOT");
                 v = new Voxel_NOT(type, position, adj);
                 break;
-            case -1:
-                print ("-1 NONE");
+            case 1:
+                v = new Voxel_OR(type, position, adj);
+                break;
+            case 2:
+                v = new Voxel_AND(type, position, adj);
+                break;
+            case 3:
+                v = new Voxel_XOR(type, position, adj);
+                break;
+            case 4:
+                v = new Voxel_XAND(type, position, adj);
+                break;
+            case 5:
+                v = new Voxel_ALU(type, position, adj);
                 break;
             default:
-                print ("Incorrect intelligence level.");
+                v = new Voxel(type, position, adj);
                 break;
         }
 
