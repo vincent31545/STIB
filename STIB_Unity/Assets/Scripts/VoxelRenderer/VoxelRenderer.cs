@@ -10,6 +10,7 @@ public class VoxelRenderer : MonoBehaviour
     private RenderParams renderParams;
     private Matrix4x4[] voxelMatrices;
     private Vector4[] voxelColors;
+    private List<Vector4> voxelData = new List<Vector4>();
 
     private void Awake() {
     
@@ -31,11 +32,18 @@ public class VoxelRenderer : MonoBehaviour
             voxelMatrices[i] = Matrix4x4.TRS(WorldManager.GetVoxel(i).position + (Vector3.up + Vector3.forward + Vector3.right) * 0.5f, Quaternion.identity, Vector3.one);
 
             voxelColors[i] = WorldManager.GetVoxel(i).GetVoxelColor();
+            if (i >= voxelData.Count) voxelData.Add(new Vector4(0, 0, 0, 0));
         }
 
         renderParams = new RenderParams(renderingMaterial);
         MaterialPropertyBlock materialProp = new MaterialPropertyBlock();
         materialProp.SetVectorArray("_InstanceColor", voxelColors);
+        materialProp.SetVectorArray("_VoxelData", voxelData);
         renderParams.matProps = materialProp;
+    }
+
+    public void SetVoxData(Vector4 data, int voxelIndex) {
+        voxelData[voxelIndex] = data;
+        renderParams.matProps.SetVectorArray("_VoxelData", voxelData);
     }
 }

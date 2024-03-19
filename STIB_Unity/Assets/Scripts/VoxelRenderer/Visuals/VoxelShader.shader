@@ -51,6 +51,7 @@ Shader "Unlit/VoxelShader"
 
             UNITY_INSTANCING_BUFFER_START(Props)
                 UNITY_DEFINE_INSTANCED_PROP(fixed4, _InstanceColor)
+                UNITY_DEFINE_INSTANCED_PROP(fixed4, _VoxelData)
             UNITY_INSTANCING_BUFFER_END(Props)
 
             float _BlendStart;
@@ -85,10 +86,12 @@ Shader "Unlit/VoxelShader"
                 float strength = min(1, dir * 3);
                 float step = smoothstep(_BlendStart + _BlendOffset, _BlendEnd + _BlendOffset, strength);
 
+                float4 data = UNITY_ACCESS_INSTANCED_PROP(Props, _VoxelData);
+
                 float lightResult = step + (1 - step) * _ShadowStrength;
                 float4 colorResult = col * lightResult * UNITY_ACCESS_INSTANCED_PROP(Props, _InstanceColor);
 
-                return colorResult;
+                return (colorResult * (1 - data[0])) + (float4(1, 0, 0, 1) * data[0]);
             }
             ENDCG
         }

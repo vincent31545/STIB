@@ -87,7 +87,7 @@ public class BlockPlacer : MonoBehaviour
                 removeTimer += Time.deltaTime;
 
                 if (removeTimer >= 0.25f) {
-                    WorldManager.RemoveVoxel(selectedVoxel);
+                    if (!selectedVoxel.invincible) WorldManager.RemoveVoxel(selectedVoxel);
                     removeTimer = 0;
                 }
             }
