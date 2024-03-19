@@ -19,7 +19,7 @@ public class WorldManager : MonoBehaviour
     private OnAddVoxel onAddVoxel;
     private OnRemoveVoxel onRemoveVoxel;
     private OnClearVoxels onClearVoxels;
-    private int counter = 0;
+    private float counter = 0;
 
     void Awake() {
         if (instance != null) {
@@ -34,13 +34,15 @@ public class WorldManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         for (int x = 0; x < 50; x++)
-            for (int z = 0; z < 50; z++)
-                AddVoxel(VOXEL_TYPE.None, new Vector3Int(x, -1, z), -1);
+            for (int z = 0; z < 50; z++) {
+                Voxel v = AddVoxel(VOXEL_TYPE.None, new Vector3Int(x, -1, z), -1);
+                v.invincible = true;
+            }
     }
 
     void Update() {
-        counter++;
-        if (counter >= 60) {
+        counter += Time.deltaTime;
+        if (counter >= (1 / 3)) {
             UpdateAllSignals();
         } 
     }
@@ -61,6 +63,7 @@ public class WorldManager : MonoBehaviour
  
  
     public static int GetVoxelCount() { return instance.voxels.Count; }
+    public static int GetVoxelIndex(Voxel v) { return instance.voxels.IndexOf(v); }
 
     public static Voxel GetVoxel(int i) { return instance.voxels[i]; }
     public static Voxel GetVoxel(Vector3Int gridPos) {
@@ -71,7 +74,7 @@ public class WorldManager : MonoBehaviour
         return null;
     }
 
-    public static void UpdateAllSignals() {
+    private void UpdateAllSignals() {
         for (int i = 0; i < GetVoxelCount(); ++i) {
             instance.voxels[i].UpdateSignal();
         }
@@ -102,7 +105,7 @@ public class WorldManager : MonoBehaviour
         Voxel v;
         switch (blockType) {
             case 0:
-                v = new Voxel_NOT(type, position, adj);
+                v = new Voxel_SEND(type, position, adj);
                 break;
             case 1:
                 v = new Voxel_OR(type, position, adj);
@@ -111,7 +114,7 @@ public class WorldManager : MonoBehaviour
                 v = new Voxel_AND(type, position, adj);
                 break;
             case 3:
-                v = new Voxel_XOR(type, position, adj);
+                v = new Voxel_WIRE(type, position, adj);
                 break;
             case 4:
                 v = new Voxel_XAND(type, position, adj);
@@ -126,6 +129,7 @@ public class WorldManager : MonoBehaviour
 
         instance.voxels.Add(v);
         instance.onAddVoxel?.Invoke();
+        v.Initialize();
         return v;
     }
     public static Voxel RemoveVoxel(Voxel v) {

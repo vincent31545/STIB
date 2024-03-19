@@ -18,6 +18,10 @@ public class Voxel
         }
         signals = new bool[6] {false, false, false, false, false, false};
     }
+    public virtual void Initialize() {
+        
+    }
+
     public bool RemoveAdjacent(int pos) {
 
         // Calculating which direction 
@@ -31,16 +35,19 @@ public class Voxel
         return true;
     }
 
-    public void SendSignal(Boolean sig) {
+    public void SendSignal(bool sig) {
         signals[forward] = sig;
+        if (sig) WorldManager.instance.voxelRenderer.SetVoxData(new Vector4(1, 0, 0, 0), WorldManager.GetVoxelIndex(this));
     }
 
-    public virtual void UpdateSignal() {}
+    public virtual void UpdateSignal() { }
 
     public VOXEL_TYPE type;
     public Vector3Int position;
     public Voxel[] adjacent;
     public bool[] signals;
+
+    public bool invincible = false;
 
     // x, -x, y, -y, z, -z
     public int forward;

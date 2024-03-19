@@ -5,7 +5,11 @@ using UnityEngine;
 public class Voxel_LED: Voxel {
 
     public Voxel_LED(VOXEL_TYPE _type, Vector3Int _pos, Voxel[] _adjacent) : base(_type, _pos, _adjacent) {
-        Debug.Log("CREATION: LED block");
+
+    }
+
+    public override void Initialize() {
+        base.Initialize();
         SendSignal(false);
     }
   
