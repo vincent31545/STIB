@@ -29,8 +29,9 @@ public class BlockPlacer : MonoBehaviour
         predictionDisplayInstance = Instantiate(predictionDisplayPrefab);
 
         placeControls = new ControlOption[9];
-        for (int i = 0; i < placeControls.Length; ++i)
+        for (int i = 0; i < placeControls.Length; ++i) {
             placeControls[i] = Instantiate(placeControlPrefab, placeControlParent);
+        }
 
         SelectBlockType(0, true);
     }
@@ -41,7 +42,7 @@ public class BlockPlacer : MonoBehaviour
                 SelectBlockType(i);
 
         scrollAccumulation -= Input.mouseScrollDelta.y;
-        if (Mathf.Abs(scrollAccumulation) > 1.5f) {
+        if (Mathf.Abs(scrollAccumulation) > 0.3f) {
             int i = blockType + (scrollAccumulation > 0 ? 1 : -1);
             if (i >= 9) i = 0;
 
@@ -49,6 +50,9 @@ public class BlockPlacer : MonoBehaviour
 
             scrollAccumulation = 0;
         }
+
+        for (int i = 0; i < placeControls.Length; ++i)
+            placeControls[i].Refresh();
 
         // Selection
         Vector3Int normal;
@@ -97,8 +101,7 @@ public class BlockPlacer : MonoBehaviour
 
     private void SelectBlockType(int type, bool force = false) {
         blockType = type;
-
         for (int i = 0; i < placeControls.Length; ++i)
-            placeControls[i].Activate(i == blockType, force);
+            placeControls[i].active = i == type;
     }
 }

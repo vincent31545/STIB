@@ -93,8 +93,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 1869482952683323657}
   cg: {fileID: 4269579007209109526}
-  offScale: 0.45
-  scaleTime: 0.15
+  offScale: 0.5
+  scaleTime: 10
+  active: 0
 --- !u!1 &3777947154141193205
 GameObject:
   m_ObjectHideFlags: 0
