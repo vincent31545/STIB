@@ -10,27 +10,10 @@ public class ControlOption : MonoBehaviour
     [Space]
     public float offScale = 0.5f;
     public float scaleTime = 0.1f;
+    [Space]
+    public bool active = false;
 
-    private bool activated = false;
-
-    public void Activate(bool on, bool force = false) {
-        if (activated != on || force) {
-            cg.alpha = on ? 1.0f : 0.4f;
-            StartCoroutine(Scale(icon.localScale, Vector3.one * (on ? 1 : offScale), scaleTime));
-            activated = on;
-        }
-    }
-
-    private IEnumerator Scale(Vector3 from, Vector3 to, float time) {
-        from.z = to.z = 1;
-
-        icon.localScale = from;
-        float t = 0;
-        while (t < time) {
-            t += Time.deltaTime;
-            icon.localScale = Vector3.Lerp(from, to, t);
-            yield return null;
-        }
-        icon.localScale = to;
+    public void Refresh() {
+        icon.localScale = Vector3.Lerp(icon.localScale, Vector3.one * (active ? 1 : offScale), scaleTime * Time.deltaTime);
     }
 }
