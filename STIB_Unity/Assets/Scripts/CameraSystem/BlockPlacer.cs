@@ -81,6 +81,9 @@ public class BlockPlacer : MonoBehaviour
                     WorldManager.RemoveVoxel(selectedVoxel);
                 }
                 removeTimer = -1f;
+            } else if (Input.GetKeyDown(KeyCode.R)) {
+                Debug.Log("ROTATE BLOCK ");
+                WorldManager.RotateVoxel(selectedVoxel);
             }
 
             if (removeTimer != -1) {

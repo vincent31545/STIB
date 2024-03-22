@@ -137,4 +137,11 @@ public class WorldManager : MonoBehaviour
         instance.onRemoveVoxel?.Invoke();
         return v;
     }
+
+    public static void RotateVoxel(Voxel v) {
+        v.forward++;
+        if (v.forward >= 6)
+            v.forward = 0;
+        Debug.Log(v.forward);
+    }
 }
