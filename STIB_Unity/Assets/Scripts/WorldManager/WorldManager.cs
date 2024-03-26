@@ -140,6 +140,8 @@ public class WorldManager : MonoBehaviour
         return v;
     }
     public static Voxel RemoveVoxel(Voxel v) {
+        if (v.invincible == true)
+            return v;
         instance.voxels.Remove(v);
         instance.onRemoveVoxel?.Invoke();
         return v;

@@ -13,7 +13,15 @@ public class BlockPlacer : MonoBehaviour
     private Vector3Int predictedPlacement;
     private GameObject selectedDisplayInstance, predictionDisplayInstance;
 
+<<<<<<< Updated upstream
     private float removeTimer = -1f;
+=======
+    private ControlOption[] placeControls;
+    private KeyCode[] numberKeys = { KeyCode.Alpha0, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, };
+
+    private int blockType;
+    private float scrollAccumulation = 0;
+>>>>>>> Stashed changes
 
     private void Start() {
         selectedDisplayInstance = Instantiate(selectedDisplayPrefab);
@@ -35,6 +43,7 @@ public class BlockPlacer : MonoBehaviour
             predictionDisplayInstance.transform.position = predictedPlacement;
 
             selectedDisplayInstance.SetActive(!Input.GetKey(KeyCode.LeftAlt));
+<<<<<<< Updated upstream
             predictionDisplayInstance.SetActive(!Input.GetKey(KeyCode.LeftAlt) && removeTimer == -1);
 
             if (Input.GetMouseButtonDown(1)) {
@@ -49,10 +58,22 @@ public class BlockPlacer : MonoBehaviour
                 }
                 removeTimer = -1f;
             } else if (Input.GetKeyDown(KeyCode.R)) {
+=======
+            predictionDisplayInstance.SetActive(!Input.GetKey(KeyCode.LeftAlt));
+            
+            // Placing block
+            if (Input.GetMouseButtonDown(1)) 
+                WorldManager.AddVoxel(VOXEL_TYPE.None, predictedPlacement, blockType);
+            else if (Input.GetMouseButtonDown(0))
+                WorldManager.RemoveVoxel(selectedVoxel);
+            // Rotating block
+            else if (Input.GetKeyDown(KeyCode.R)) {
+>>>>>>> Stashed changes
                 Debug.Log("ROTATE BLOCK ");
                 WorldManager.RotateVoxel(selectedVoxel);
             }
 
+<<<<<<< Updated upstream
             if (removeTimer != -1) {
                 removeTimer += Time.deltaTime;
 
@@ -61,6 +82,9 @@ public class BlockPlacer : MonoBehaviour
                     removeTimer = 0;
                 }
             }
+=======
+            
+>>>>>>> Stashed changes
         }
         else {
             selectedVoxel = null;
