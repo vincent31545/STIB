@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -84,25 +85,6 @@ public class WorldManager : MonoBehaviour
     public static Voxel AddVoxel(VOXEL_TYPE type, Vector3Int position, int blockType, bool callback = true) {
         var adj = new Voxel[6];
 
-        // Set neighbors
-        for (int i = 0; i < GetVoxelCount(); ++i) {
-            bool xdiff = Math.Abs(position.x - instance.voxels[i].position.x) == 1;
-            bool ydiff = Math.Abs(position.y - instance.voxels[i].position.y) == 1;
-            bool zdiff = Math.Abs(position.z - instance.voxels[i].position.z) == 1;
-            if (xdiff && !ydiff && !zdiff) {
-                int index = ((position.x - instance.voxels[i].position.x) == 1) ? 0 : 1;
-                adj[index] = instance.voxels[i];
-            }
-            else if (!xdiff && ydiff && !zdiff) {
-                int index = ((position.y - instance.voxels[i].position.y) == 1) ? 0 : 1;
-                adj[index+2] = instance.voxels[i];
-            }
-            else if (!xdiff && !ydiff && zdiff) {
-                int index = ((position.z - instance.voxels[i].position.z) == 1) ? 0 : 1;
-                adj[index+4] = instance.voxels[i];
-            }
-        }
-
         Voxel v;
         switch (blockType) {
             case 0:
@@ -126,6 +108,31 @@ public class WorldManager : MonoBehaviour
             default:
                 v = new Voxel(type, position, adj);
                 break;
+        }
+        // Set neighbors
+        for (int i = 0; i < GetVoxelCount(); ++i) {
+            int xdiff = position.x - instance.voxels[i].position.x;
+            int ydiff = position.y - instance.voxels[i].position.y;
+            int zdiff = position.z - instance.voxels[i].position.z;
+
+            if (Math.Abs(xdiff) == 1 && Math.Abs(ydiff) != 1 && Math.Abs(zdiff) != 1) {
+                int index = (xdiff < 0) ? 0 : 1;
+                int reverse = (xdiff > 0) ? 0 : 1;
+                v.adjacent[index] = instance.voxels[i];
+                instance.voxels[i].adjacent[reverse] = v;
+            }
+            else if (Math.Abs(xdiff) != 1 && Math.Abs(ydiff) == 1 && Math.Abs(zdiff) != 1) {
+                int index = (ydiff < 0) ? 0 : 1;
+                int reverse = (ydiff > 0) ? 0 : 1;
+                v.adjacent[index+2] = instance.voxels[i];
+                instance.voxels[i].adjacent[reverse] = v;
+            }
+            else if (Math.Abs(xdiff) != 1 && Math.Abs(ydiff) != 1 && Math.Abs(zdiff) == 1) {
+                int index = (zdiff < 0) ? 0 : 1;
+                int reverse = (zdiff > 0) ? 0 : 1;
+                v.adjacent[index+4] = instance.voxels[i];
+                instance.voxels[i].adjacent[reverse] = v;
+            }
         }
 
         instance.voxels.Add(v);
