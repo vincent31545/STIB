@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
     [Header("Movement")]
     public float baseSpeed = 10;
     public float shiftSpeed = 20;
+    public float upSpeedMultiplier = 1;
     [Space]
     public float lookSensitivity = 10;
 
@@ -45,6 +46,11 @@ public class CameraController : MonoBehaviour
     private void ProcessMovement() {
         if (Input.GetKey(KeyCode.LeftShift))
             moveSpeed = shiftSpeed;
+            
+        if (Input.GetKey(KeyCode.Q))
+            transform.position += -Vector3.up * Time.deltaTime * moveSpeed * upSpeedMultiplier;
+        else if (Input.GetKey(KeyCode.E))
+            transform.position += Vector3.up * Time.deltaTime * moveSpeed * upSpeedMultiplier;
 
         transform.position += (moveInput.x * transform.right + moveInput.y * transform.forward) * Time.deltaTime * moveSpeed;
     }

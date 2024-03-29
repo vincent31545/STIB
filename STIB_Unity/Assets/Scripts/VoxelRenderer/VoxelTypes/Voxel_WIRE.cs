@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Voxel_NOT : Voxel {
+public class Voxel_WIRE: Voxel {
 
-    public Voxel_NOT(VOXEL_TYPE _type, Vector3Int _pos, Voxel[] _adjacent) : base(_type, _pos, _adjacent) {
-
+    public Voxel_WIRE(VOXEL_TYPE _type, Vector3Int _pos, Voxel[] _adjacent) : base(_type, _pos, _adjacent) {
+        Debug.Log("Created WIRE BLOCK");
     }
 
+    public override void Initialize() {
+        base.Initialize();
+        SendSignal(false);
+    }
+  
     public override void UpdateSignal() {
         
         // Checking all inputs
@@ -16,10 +21,14 @@ public class Voxel_NOT : Voxel {
             // Invert signal position
             // ie if block on the right outgoing then block on left incoming 
             if (adjacent[i].signals[ (i%2 == 1) ? (i-1) : (i+1)]) {
-                SendSignal(false);
+                SendSignal(true);
+                Debug.Log("POWERED");
                 return;
             }
         }
-        SendSignal(true);
+        SendSignal(false);
     }
+
+    public override Color GetVoxelColor() => Color.black;
 }
+
