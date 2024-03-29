@@ -33,20 +33,21 @@ public class WorldManager : MonoBehaviour
     void Start() {
         Application.targetFrameRate = 60;
 
-        for (int x = 0; x < 50; x++)
-            for (int z = 0; z < 50; z++) {
-                Voxel v = AddVoxel(VOXEL_TYPE.None, new Vector3Int(x, -1, z), -1);
+        for (int x = 0; x < 100; x++)
+            for (int z = 0; z < 100; z++) {
+                Voxel v = AddVoxel(VOXEL_TYPE.None, new Vector3Int(x  - 50, -1, z - 50), -1, false);
                 v.invincible = true;
             }
+        instance.onAddVoxel?.Invoke();
     }
 
     void Update() {
         counter += Time.deltaTime;
         if (counter >= (1 / 3)) {
             UpdateAllSignals();
-        } 
+        }
     }
-    
+
     public static void RegisterAddVoxelEvent(OnAddVoxel a) {
         instance.onAddVoxel += a;
     }
@@ -60,8 +61,8 @@ public class WorldManager : MonoBehaviour
     public static Vector3Int GetGridPos(Vector3 position) {
         return new Vector3Int(Mathf.FloorToInt(position.x), Mathf.FloorToInt(position.y), Mathf.FloorToInt(position.z));
     }
- 
- 
+
+
     public static int GetVoxelCount() { return instance.voxels.Count; }
     public static int GetVoxelIndex(Voxel v) { return instance.voxels.IndexOf(v); }
 
@@ -80,7 +81,7 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    public static Voxel AddVoxel(VOXEL_TYPE type, Vector3Int position, int blockType) {
+    public static Voxel AddVoxel(VOXEL_TYPE type, Vector3Int position, int blockType, bool callback = true) {
         var adj = new Voxel[6];
 
         // Set neighbors
@@ -90,15 +91,15 @@ public class WorldManager : MonoBehaviour
             bool zdiff = Math.Abs(position.z - instance.voxels[i].position.z) == 1;
             if (xdiff && !ydiff && !zdiff) {
                 int index = ((position.x - instance.voxels[i].position.x) == 1) ? 0 : 1;
-                adj[index] = instance.voxels[i]; 
-            } 
+                adj[index] = instance.voxels[i];
+            }
             else if (!xdiff && ydiff && !zdiff) {
                 int index = ((position.y - instance.voxels[i].position.y) == 1) ? 0 : 1;
-                adj[index+2] = instance.voxels[i]; 
-            } 
+                adj[index+2] = instance.voxels[i];
+            }
             else if (!xdiff && !ydiff && zdiff) {
                 int index = ((position.z - instance.voxels[i].position.z) == 1) ? 0 : 1;
-                adj[index+4] = instance.voxels[i];               
+                adj[index+4] = instance.voxels[i];
             }
         }
 
@@ -128,7 +129,7 @@ public class WorldManager : MonoBehaviour
         }
 
         instance.voxels.Add(v);
-        instance.onAddVoxel?.Invoke();
+        if (callback) instance.onAddVoxel?.Invoke();
         v.Initialize();
         return v;
     }
