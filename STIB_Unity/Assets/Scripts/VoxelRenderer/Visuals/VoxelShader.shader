@@ -11,6 +11,9 @@ Shader "Unlit/VoxelShader"
         _MainTex ("Texture", 2D) = "white" {}
         [HDR] _Color("Color", Color) = (1, 1, 1, 1)
         [Space]
+        _OnTex ("On Texture", 2D) = "white" {}
+        [HDR] _OnColor("On Color", Color) = (1, 0, 0, 1)
+        [Space]
         _BlendStart("Blend Start", Range(0, 1)) = 0
         _BlendEnd("Blend End", Range(0, 1)) = 1
         _BlendOffset("Blend Offset", Range(-2, 1)) = 0
@@ -54,6 +57,9 @@ Shader "Unlit/VoxelShader"
             float4 _MainTex_ST;
             float4 _Color;
 
+            sampler2D _OnTex;
+            float4 _OnColor;
+
             UNITY_INSTANCING_BUFFER_START(Props)
                 UNITY_DEFINE_INSTANCED_PROP(fixed4, _InstanceColor)
                 UNITY_DEFINE_INSTANCED_PROP(fixed4, _VoxelData)
@@ -85,6 +91,7 @@ Shader "Unlit/VoxelShader"
                 UNITY_SETUP_INSTANCE_ID(i);
 
                 fixed4 col = tex2D(_MainTex, i.uv) * _Color;
+                fixed4 onCol = tex2D(_OnTex, i.uv) * _OnColor;
 
                 float dir = dot(i.normal, -_WorldSpaceLightPos0.xyz);
                 float strength = min(1, dir * 3);
@@ -95,7 +102,7 @@ Shader "Unlit/VoxelShader"
                 float lightResult = step + (1 - step) * _ShadowStrength;
                 float4 colorResult = col * lightResult * UNITY_ACCESS_INSTANCED_PROP(Props, _InstanceColor);
 
-                return (colorResult * (1 - data[0])) + (float4(1, 0, 0, 1) * data[0]);
+                return (colorResult) + (onCol * data[0]);
             }
             ENDCG
         }
