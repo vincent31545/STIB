@@ -39,7 +39,7 @@ public class Voxel
     public void SendSignal(bool sig) {
         signals[forward] = sig;
         // Gives the red circle texture
-        if (sig) WorldManager.instance.voxelRenderer.SetVoxData(new Vector4(1, 0, 0, 0), WorldManager.GetVoxelIndex(this));
+        WorldManager.instance.voxelRenderer.SetVoxData(new Vector4(sig ? 1 : 0, 0, 0, 0), WorldManager.GetVoxelIndex(this));
     }
 
     // This takes in a direction and turns it off before forward is called
