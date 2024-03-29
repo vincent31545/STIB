@@ -36,7 +36,7 @@ public class WorldManager : MonoBehaviour
 
         for (int x = 0; x < 100; x++)
             for (int z = 0; z < 100; z++) {
-                Voxel v = AddVoxel(VOXEL_TYPE.None, new Vector3Int(x  - 50, -1, z - 50), -1, false);
+                Voxel v = AddVoxel(VOXEL_TYPE.None, new Vector3Int(x  - 50, -1, z - 50), false);
                 v.invincible = true;
             }
         instance.onAddVoxel?.Invoke();
@@ -82,13 +82,13 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    public static Voxel AddVoxel(VOXEL_TYPE type, Vector3Int position, int blockType, bool callback = true) {
+    public static Voxel AddVoxel(VOXEL_TYPE type, Vector3Int position, bool callback = true) {
         var adj = new Voxel[6];
 
         Voxel v;
-        switch (blockType) {
-            case 0:
-                v = new Voxel_SEND(type, position, adj);
+        switch (type) {
+            case VOXEL_TYPE.NOT:
+                v = new Voxel_NOT(type, position, adj);
                 break;
             case 1:
                 v = new Voxel_WIRE(type, position, adj);
@@ -106,7 +106,7 @@ public class WorldManager : MonoBehaviour
                 v = new Voxel_AND(type, position, adj);
                 break;
             default:
-                v = new Voxel(type, position, adj);
+                v = new Voxel(VOXEL_TYPE.None, position, adj);
                 break;
         }
         // Set neighbors

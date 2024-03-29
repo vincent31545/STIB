@@ -16,8 +16,11 @@ public class CameraController : MonoBehaviour
     private Vector2 moveInput;
     private Vector3 rotation;
 
+    public Camera cam { get; set; }
+
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
+        cam = GetComponent<Camera>();
     }
 
     private void Update() {
