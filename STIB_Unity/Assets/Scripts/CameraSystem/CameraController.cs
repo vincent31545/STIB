@@ -15,8 +15,11 @@ public class CameraController : MonoBehaviour
     private Vector2 lookInput;
     private Vector2 moveInput;
 
+    public Camera cam { get; set; }
+
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
+        cam = GetComponent<Camera>();
     }
 
     private void Update() {
@@ -37,7 +40,7 @@ public class CameraController : MonoBehaviour
     private void ProcessMovement() {
         if (Input.GetKey(KeyCode.LeftShift))
             moveSpeed = shiftSpeed;
-            
+
         if (Input.GetKey(KeyCode.Q))
             transform.position += -Vector3.up * Time.deltaTime * moveSpeed * upSpeedMultiplier;
         else if (Input.GetKey(KeyCode.E))
