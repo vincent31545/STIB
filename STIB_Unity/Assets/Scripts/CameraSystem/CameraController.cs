@@ -36,7 +36,7 @@ public class CameraController : MonoBehaviour
         // Calculate the up down and left right angle
         rotation += (Vector3.up * lookInput.x - Vector3.right * lookInput.y) * Time.deltaTime * lookSensitivity * 40;
         rotation.x = Mathf.Clamp(rotation.x, -85, 85);
-
+        
         // Clamp upwards rotation
         transform.localEulerAngles = rotation;
     }

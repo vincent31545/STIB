@@ -109,19 +109,19 @@ public class WorldManager : MonoBehaviour
                 v = new Voxel_SEND(type, position, adj);
                 break;
             case 1:
-                v = new Voxel_OR(type, position, adj);
-                break;
-            case 2:
-                v = new Voxel_AND(type, position, adj);
-                break;
-            case 3:
                 v = new Voxel_WIRE(type, position, adj);
                 break;
+            case 2:
+                v = new Voxel_LED(type, position, adj);
+                break;
+            case 3:
+                v = new Voxel_NOT(type, position, adj);
+                break;
             case 4:
-                v = new Voxel_XAND(type, position, adj);
+                v = new Voxel_OR(type, position, adj);
                 break;
             case 5:
-                v = new Voxel_ALU(type, position, adj);
+                v = new Voxel_AND(type, position, adj);
                 break;
             default:
                 v = new Voxel(type, position, adj);

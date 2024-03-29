@@ -58,10 +58,10 @@ public class Voxel
 
 public enum VOXEL_TYPE {
     None = -1,
-    NOT = 0,
-    OR = 1,
-    AND = 2,
-    WIRE = 3,
-    SEND = 4,
-    LED = 5
+    SEND = 0,
+    WIRE = 1,
+    LED = 2,
+    NOT = 3,
+    OR = 4,
+    AND = 5
 }
