@@ -23,5 +23,5 @@ public class Voxel_OR : Voxel {
         SendSignal(false);
     }
 
-    public override Color GetVoxelColor() => Color.red;
+    public override Color GetVoxelColor() => Color.magenta;
 }

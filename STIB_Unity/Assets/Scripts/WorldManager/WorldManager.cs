@@ -142,9 +142,9 @@ public class WorldManager : MonoBehaviour
     }
 
     public static void RotateVoxel(Voxel v) {
+        v.TurnSignalOff(v.forward);
         v.forward++;
         if (v.forward >= 6)
             v.forward = 0;
-        Debug.Log(v.forward);
     }
 }

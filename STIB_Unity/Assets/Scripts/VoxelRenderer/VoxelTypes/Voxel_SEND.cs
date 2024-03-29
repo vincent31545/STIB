@@ -15,7 +15,7 @@ public class Voxel_SEND: Voxel {
     }
 
   
-    public override Color GetVoxelColor() => Color.black;
+    public override Color GetVoxelColor() => Color.red;
 
     public override void UpdateSignal() {}
 }

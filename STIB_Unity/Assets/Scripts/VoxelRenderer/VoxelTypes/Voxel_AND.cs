@@ -8,7 +8,7 @@ public class Voxel_AND : Voxel {
 
     }
   
-    public override Color GetVoxelColor() => Color.black;
+    public override Color GetVoxelColor() => Color.grey;
 
     public override void UpdateSignal() {
         int counter = 0;

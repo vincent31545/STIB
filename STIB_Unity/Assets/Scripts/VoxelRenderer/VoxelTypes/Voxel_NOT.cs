@@ -8,6 +8,8 @@ public class Voxel_NOT : Voxel {
 
     }
 
+    public override Color GetVoxelColor() => Color.yellow;
+
     public override void UpdateSignal() {
         
         // Checking all inputs

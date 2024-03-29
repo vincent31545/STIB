@@ -13,7 +13,7 @@ public class Voxel_LED: Voxel {
         SendSignal(false);
     }
   
-    public override Color GetVoxelColor() => Color.black;
+    public override Color GetVoxelColor() => Color.grey;
 
     public override void UpdateSignal() {
        for (int i = 0; i < 6; i++) {
