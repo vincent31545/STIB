@@ -14,6 +14,7 @@ public class CameraController : MonoBehaviour
     private float moveSpeed;
     private Vector2 lookInput;
     private Vector2 moveInput;
+    private Vector3 rotation;
 
     public Camera cam { get; set; }
 
@@ -35,7 +36,12 @@ public class CameraController : MonoBehaviour
     }
 
     private void ProcessRotation() {
-        transform.eulerAngles += (Vector3.up * lookInput.x - Vector3.right * lookInput.y) * Time.deltaTime * lookSensitivity * 40;
+        // Calculate the up down and left right angle
+        rotation += (Vector3.up * lookInput.x - Vector3.right * lookInput.y) * Time.deltaTime * lookSensitivity * 40;
+        rotation.x = Mathf.Clamp(rotation.x, -85, 85);
+        
+        // Clamp upwards rotation
+        transform.localEulerAngles = rotation;
     }
     private void ProcessMovement() {
         if (Input.GetKey(KeyCode.LeftShift))

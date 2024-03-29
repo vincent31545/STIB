@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -84,48 +85,54 @@ public class WorldManager : MonoBehaviour
     public static Voxel AddVoxel(VOXEL_TYPE type, Vector3Int position, bool callback = true) {
         var adj = new Voxel[6];
 
-        // Set neighbors
-        for (int i = 0; i < GetVoxelCount(); ++i) {
-            bool xdiff = Math.Abs(position.x - instance.voxels[i].position.x) == 1;
-            bool ydiff = Math.Abs(position.y - instance.voxels[i].position.y) == 1;
-            bool zdiff = Math.Abs(position.z - instance.voxels[i].position.z) == 1;
-            if (xdiff && !ydiff && !zdiff) {
-                int index = ((position.x - instance.voxels[i].position.x) == 1) ? 0 : 1;
-                adj[index] = instance.voxels[i];
-            }
-            else if (!xdiff && ydiff && !zdiff) {
-                int index = ((position.y - instance.voxels[i].position.y) == 1) ? 0 : 1;
-                adj[index+2] = instance.voxels[i];
-            }
-            else if (!xdiff && !ydiff && zdiff) {
-                int index = ((position.z - instance.voxels[i].position.z) == 1) ? 0 : 1;
-                adj[index+4] = instance.voxels[i];
-            }
-        }
-
         Voxel v;
         switch (type) {
             case VOXEL_TYPE.NOT:
                 v = new Voxel_NOT(type, position, adj);
                 break;
-            case VOXEL_TYPE.OR:
-                v = new Voxel_OR(type, position, adj);
-                break;
-            case VOXEL_TYPE.AND:
-                v = new Voxel_AND(type, position, adj);
-                break;
-            case VOXEL_TYPE.WIRE:
+            case 1:
                 v = new Voxel_WIRE(type, position, adj);
                 break;
-            case VOXEL_TYPE.SEND:
-                v = new Voxel_SEND(type, position, adj);
-                break;
-            case VOXEL_TYPE.LED:
+            case 2:
                 v = new Voxel_LED(type, position, adj);
+                break;
+            case 3:
+                v = new Voxel_NOT(type, position, adj);
+                break;
+            case 4:
+                v = new Voxel_OR(type, position, adj);
+                break;
+            case 5:
+                v = new Voxel_AND(type, position, adj);
                 break;
             default:
                 v = new Voxel(VOXEL_TYPE.None, position, adj);
                 break;
+        }
+        // Set neighbors
+        for (int i = 0; i < GetVoxelCount(); ++i) {
+            int xdiff = position.x - instance.voxels[i].position.x;
+            int ydiff = position.y - instance.voxels[i].position.y;
+            int zdiff = position.z - instance.voxels[i].position.z;
+
+            if (Math.Abs(xdiff) == 1 && Math.Abs(ydiff) != 1 && Math.Abs(zdiff) != 1) {
+                int index = (xdiff < 0) ? 0 : 1;
+                int reverse = (xdiff > 0) ? 0 : 1;
+                v.adjacent[index] = instance.voxels[i];
+                instance.voxels[i].adjacent[reverse] = v;
+            }
+            else if (Math.Abs(xdiff) != 1 && Math.Abs(ydiff) == 1 && Math.Abs(zdiff) != 1) {
+                int index = (ydiff < 0) ? 0 : 1;
+                int reverse = (ydiff > 0) ? 0 : 1;
+                v.adjacent[index+2] = instance.voxels[i];
+                instance.voxels[i].adjacent[reverse] = v;
+            }
+            else if (Math.Abs(xdiff) != 1 && Math.Abs(ydiff) != 1 && Math.Abs(zdiff) == 1) {
+                int index = (zdiff < 0) ? 0 : 1;
+                int reverse = (zdiff > 0) ? 0 : 1;
+                v.adjacent[index+4] = instance.voxels[i];
+                instance.voxels[i].adjacent[reverse] = v;
+            }
         }
 
         instance.voxels.Add(v);
@@ -134,8 +141,17 @@ public class WorldManager : MonoBehaviour
         return v;
     }
     public static Voxel RemoveVoxel(Voxel v) {
+        if (v.invincible == true)
+            return v;
         instance.voxels.Remove(v);
         instance.onRemoveVoxel?.Invoke();
         return v;
+    }
+
+    public static void RotateVoxel(Voxel v) {
+        v.forward++;
+        if (v.forward >= 6)
+            v.forward = 0;
+        Debug.Log(v.forward);
     }
 }
