@@ -87,22 +87,22 @@ public class WorldManager : MonoBehaviour
 
         Voxel v;
         switch (type) {
+            case VOXEL_TYPE.SEND:
+                v = new Voxel_SEND(type, position, adj);
+                break;
+            case VOXEL_TYPE.WIRE:
+                v = new Voxel_WIRE(type, position, adj);
+                break;
+            case VOXEL_TYPE.LED:
+                v = new Voxel_LED(type, position, adj);
+                break;
             case VOXEL_TYPE.NOT:
                 v = new Voxel_NOT(type, position, adj);
                 break;
-            case 1:
-                v = new Voxel_WIRE(type, position, adj);
-                break;
-            case 2:
-                v = new Voxel_LED(type, position, adj);
-                break;
-            case 3:
-                v = new Voxel_NOT(type, position, adj);
-                break;
-            case 4:
+            case VOXEL_TYPE.OR:
                 v = new Voxel_OR(type, position, adj);
                 break;
-            case 5:
+            case VOXEL_TYPE.AND:
                 v = new Voxel_AND(type, position, adj);
                 break;
             default:
@@ -151,7 +151,6 @@ public class WorldManager : MonoBehaviour
     public static void RotateVoxel(Voxel v) {
         v.TurnSignalOff(v.forward);
         v.forward++;
-        if (v.forward >= 6)
-            v.forward = 0;
+        if (v.forward >= 6) v.forward = 0;
     }
 }

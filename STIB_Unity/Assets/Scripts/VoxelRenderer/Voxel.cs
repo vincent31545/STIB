@@ -60,16 +60,20 @@ public class Voxel
     // x, -x, y, -y, z, -z
     public int forward;
 
+    private Vector3[] directions = new Vector3[] { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, -1, 0), new Vector3(0, 0, 1), new Vector3(0, 0, -1), };
+    public Vector3 GetWorldDirection() => directions[forward];
+
     public virtual Color GetVoxelColor() => Color.white;
 }
 
 
 public enum VOXEL_TYPE {
-    None = -1,
-    SEND = 0,
-    WIRE = 1,
-    LED = 2,
-    NOT = 3,
-    OR = 4,
-    AND = 5
+    None = 0,
+
+    SEND = 1,
+    WIRE = 2,
+    LED = 3,
+    NOT = 4,
+    OR = 5,
+    AND = 6,
 }

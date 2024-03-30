@@ -7,13 +7,12 @@ public class CameraController : MonoBehaviour
     [Header("Movement")]
     public float baseSpeed = 10;
     public float shiftSpeed = 20;
-    public float upSpeedMultiplier = 1;
     [Space]
     public float lookSensitivity = 10;
 
     private float moveSpeed;
     private Vector2 lookInput;
-    private Vector2 moveInput;
+    private Vector3 moveInput;
     private Vector3 rotation;
 
     public Camera cam { get; set; }
@@ -30,6 +29,7 @@ public class CameraController : MonoBehaviour
         lookInput.y = Input.GetAxisRaw("Mouse Y");
         moveInput.x = Input.GetAxis("Horizontal");
         moveInput.y = Input.GetAxis("Vertical");
+        moveInput.z = Mathf.Lerp(moveInput.z, Input.GetKey(KeyCode.Q) ? -1 : (Input.GetKey(KeyCode.E) ? 1 : 0), 10 * Time.deltaTime);
 
         ProcessRotation();
         ProcessMovement();
@@ -39,7 +39,7 @@ public class CameraController : MonoBehaviour
         // Calculate the up down and left right angle
         rotation += (Vector3.up * lookInput.x - Vector3.right * lookInput.y) * Time.deltaTime * lookSensitivity * 40;
         rotation.x = Mathf.Clamp(rotation.x, -85, 85);
-        
+
         // Clamp upwards rotation
         transform.localEulerAngles = rotation;
     }
@@ -47,11 +47,6 @@ public class CameraController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
             moveSpeed = shiftSpeed;
 
-        if (Input.GetKey(KeyCode.Q))
-            transform.position += -Vector3.up * Time.deltaTime * moveSpeed * upSpeedMultiplier;
-        else if (Input.GetKey(KeyCode.E))
-            transform.position += Vector3.up * Time.deltaTime * moveSpeed * upSpeedMultiplier;
-
-        transform.position += (moveInput.x * transform.right + moveInput.y * transform.forward) * Time.deltaTime * moveSpeed;
+        transform.position += (moveInput.z * Vector3.up + moveInput.x * transform.right + moveInput.y * transform.forward) * Time.deltaTime * moveSpeed;
     }
 }

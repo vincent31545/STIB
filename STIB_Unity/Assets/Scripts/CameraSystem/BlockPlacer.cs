@@ -28,13 +28,13 @@ public class BlockPlacer : MonoBehaviour
     private int blockType;
     private float scrollAccumulation = 0;
     private ControlOption[] placeControls;
-    private KeyCode[] numberKeys = { KeyCode.Alpha0, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, };
+    private KeyCode[] numberKeys = { KeyCode.Alpha0, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6 };
 
     private void Start() {
         selectedDisplayInstance = Instantiate(selectedDisplayPrefab);
         predictionDisplayInstance = Instantiate(predictionDisplayPrefab);
 
-        placeControls = new ControlOption[9];
+        placeControls = new ControlOption[numberKeys.Length];
         for (int i = 0; i < placeControls.Length; ++i) {
             placeControls[i] = Instantiate(placeControlPrefab, placeControlParent);
         }
@@ -67,18 +67,19 @@ public class BlockPlacer : MonoBehaviour
             // New Select
             if (selectedVoxel == null || selectedVoxel != v) {
                 selectedVoxel = v;
-                selectedDisplayInstance.transform.position = selectedVoxel.position;
             }
+            selectedDisplayInstance.transform.position = selectedVoxel.position + Vector3.one / 2;
+            selectedDisplayInstance.transform.rotation = Quaternion.LookRotation(selectedVoxel.GetWorldDirection());
 
             predictedPlacement = selectedVoxel.position + normal;
             predictionDisplayInstance.transform.position = predictedPlacement;
 
             selectedDisplayInstance.SetActive(!Input.GetKey(KeyCode.LeftAlt));
             predictionDisplayInstance.SetActive(!Input.GetKey(KeyCode.LeftAlt));
-            
+
             // Placing block
-            if (Input.GetMouseButtonDown(1)) 
-                WorldManager.AddVoxel(VOXEL_TYPE.None, predictedPlacement, blockType);
+            if (Input.GetMouseButtonDown(1))
+                WorldManager.AddVoxel((VOXEL_TYPE)blockType, predictedPlacement);
             else if (Input.GetMouseButtonDown(0))
                 WorldManager.RemoveVoxel(selectedVoxel);
             // Rotating block
