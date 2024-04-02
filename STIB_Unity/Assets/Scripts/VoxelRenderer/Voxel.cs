@@ -37,6 +37,12 @@ public class Voxel
 
     // This function is updated every tick
     public void SendSignal(bool sig) {
+        for (int i = 0; i < signals.Length; i++) {
+            if (signals[i] == true) {
+                signals[i] = false;
+            }
+        }
+
         signals[forward] = sig;
         // Gives the red circle texture
         WorldManager.instance.voxelRenderer.SetVoxData(new Vector4(sig ? 1 : 0, 0, 0, 0), WorldManager.GetVoxelIndex(this));
@@ -64,12 +70,12 @@ public class Voxel
     public Vector3 GetWorldDirection() => directions[forward];
 
     public virtual Color GetVoxelColor() => Color.white;
+
 }
 
 
 public enum VOXEL_TYPE {
     None = 0,
-
     SEND = 1,
     WIRE = 2,
     LED = 3,

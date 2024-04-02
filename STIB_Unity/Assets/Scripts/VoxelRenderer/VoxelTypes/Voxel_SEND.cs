@@ -11,11 +11,11 @@ public class Voxel_SEND: Voxel {
     public override void Initialize() {
         base.Initialize();
         SendSignal(true);
-        Debug.Log("Sending Signal");
     }
-
   
     public override Color GetVoxelColor() => Color.red;
 
-    public override void UpdateSignal() {}
+    public override void UpdateSignal() {
+        SendSignal(true);
+    }
 }

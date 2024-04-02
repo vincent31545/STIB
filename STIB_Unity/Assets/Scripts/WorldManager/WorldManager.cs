@@ -115,23 +115,23 @@ public class WorldManager : MonoBehaviour
             int ydiff = position.y - instance.voxels[i].position.y;
             int zdiff = position.z - instance.voxels[i].position.z;
 
-            if (Math.Abs(xdiff) == 1 && Math.Abs(ydiff) != 1 && Math.Abs(zdiff) != 1) {
+            if (Math.Abs(xdiff) == 1 && ydiff == 0 && zdiff == 0) {
                 int index = (xdiff < 0) ? 0 : 1;
                 int reverse = (xdiff > 0) ? 0 : 1;
                 v.adjacent[index] = instance.voxels[i];
                 instance.voxels[i].adjacent[reverse] = v;
             }
-            else if (Math.Abs(xdiff) != 1 && Math.Abs(ydiff) == 1 && Math.Abs(zdiff) != 1) {
+            else if (xdiff == 0 && Math.Abs(ydiff) == 1 && zdiff == 0) {
                 int index = (ydiff < 0) ? 0 : 1;
                 int reverse = (ydiff > 0) ? 0 : 1;
                 v.adjacent[index+2] = instance.voxels[i];
-                instance.voxels[i].adjacent[reverse] = v;
+                instance.voxels[i].adjacent[reverse+4] = v;
             }
-            else if (Math.Abs(xdiff) != 1 && Math.Abs(ydiff) != 1 && Math.Abs(zdiff) == 1) {
+            else if (xdiff == 0 && ydiff == 0 && Math.Abs(zdiff) == 1) {
                 int index = (zdiff < 0) ? 0 : 1;
                 int reverse = (zdiff > 0) ? 0 : 1;
                 v.adjacent[index+4] = instance.voxels[i];
-                instance.voxels[i].adjacent[reverse] = v;
+                instance.voxels[i].adjacent[reverse+4] = v;
             }
         }
 
