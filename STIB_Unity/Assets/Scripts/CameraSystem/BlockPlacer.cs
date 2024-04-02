@@ -16,9 +16,6 @@ public class BlockPlacer : MonoBehaviour
     public ControlOption placeControlPrefab;
     [Space]
     public RectTransform inspectorRT;
-    public RectTransform inspectorLineRT;
-    public RectTransform inspectorContentRT;
-    [Space(5)]
     public CanvasGroup inspectorCG;
     public TextMeshProUGUI inspectorItemName;
 
@@ -58,7 +55,7 @@ public class BlockPlacer : MonoBehaviour
         }
 
         for (int i = 0; i < placeControls.Length; ++i)
-            placeControls[i].Refresh();
+            placeControls[i].Refresh(i);
 
         // Selection
         Vector3Int normal;
@@ -67,6 +64,7 @@ public class BlockPlacer : MonoBehaviour
             // New Select
             if (selectedVoxel == null || selectedVoxel != v) {
                 selectedVoxel = v;
+                selectedDisplayInstance.transform.GetChild(0).gameObject.SetActive(!selectedVoxel.invincible);
             }
             selectedDisplayInstance.transform.position = selectedVoxel.position + Vector3.one / 2;
             selectedDisplayInstance.transform.rotation = Quaternion.LookRotation(selectedVoxel.GetWorldDirection());
@@ -99,9 +97,6 @@ public class BlockPlacer : MonoBehaviour
             // Set position
             Vector3 voxelPos = selectedVoxel.position + (Vector3.one * 0.5f);
             inspectorRT.position = WorldManager.instance.cameraController.cam.WorldToScreenPoint(voxelPos);
-            inspectorContentRT.position = inspectorRT.position + (Vector3.up + Vector3.right).normalized * 30 * Mathf.Max(0.25f, 10 - Vector3.Distance(WorldManager.instance.cameraController.transform.position, voxelPos));
-            // inspectorLineRT.sizeDelta = new Vector2(5, (Vector3.Distance(inspectorRT.position, inspectorContentRT.position) - 45));
-            // inspectorLineRT.position = inspectorRT.position + (inspectorContentRT.position - inspectorRT.position).normalized * (inspectorLineRT.sizeDelta.y / 2);
 
             // Fill UI Info
             inspectorItemName.text = selectedVoxel.type.ToString();
