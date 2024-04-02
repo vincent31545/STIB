@@ -32,7 +32,6 @@ public class Voxel_WIRE: Voxel {
         int direction = (forward%2 == 1) ? (forward - 1) : (forward + 1);
         if (adjacent[direction] == null) return;
         if (adjacent[direction].signals[forward]) {
-            Debug.Log("POWERINGED");
             SendSignal(true);
             return;
         } 
