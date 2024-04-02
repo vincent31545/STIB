@@ -143,8 +143,24 @@ public class WorldManager : MonoBehaviour
     public static Voxel RemoveVoxel(Voxel v) {
         if (v.invincible == true)
             return v;
+
+        // Storing neighbors
+        var neighbors = new Voxel[6];
+        for (int i = 0; i < v.adjacent.Length; i++) {
+            neighbors[i] = v.adjacent[i];
+        }
+
         instance.voxels.Remove(v);
         instance.onRemoveVoxel?.Invoke();
+
+        // Doing it this way bc when I tried to do it not this way
+        // C sharp would try to set the reference to null instead
+        // of replacing the refernce with a null reference
+        for (int i = 0; i < neighbors.Length; i++) {
+            int reverse = (i%2 == 1) ? (i - 1) : (i + 1);
+            neighbors[i].adjacent[reverse] = null;
+        }
+
         return v;
     }
 
