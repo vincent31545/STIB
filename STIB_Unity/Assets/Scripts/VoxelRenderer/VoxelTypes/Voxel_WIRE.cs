@@ -35,7 +35,6 @@ public class Voxel_WIRE: Voxel {
             return;
         }
         if (adjacent[direction].signals[forward]) {
-            Debug.Log("POWERINGED");
             SendSignal(true);
             return;
         } 

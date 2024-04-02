@@ -148,6 +148,7 @@ public class WorldManager : MonoBehaviour
         var neighbors = new Voxel[6];
         for (int i = 0; i < v.adjacent.Length; i++) {
             neighbors[i] = v.adjacent[i];
+            v.signals[i] = false;
         }
 
         instance.voxels.Remove(v);
