@@ -22,7 +22,7 @@ public class PhysicsManager: MonoBehaviour {
 
             if (v != null) { 
                 if (last == Vector3Int.zero)
-                    normal = Vector3Int.down; 
+                    normal = Vector3Int.up; 
                 else
                     normal = (last - v.position); 
                 return v; 
