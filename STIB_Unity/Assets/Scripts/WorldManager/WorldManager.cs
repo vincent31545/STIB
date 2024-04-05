@@ -15,7 +15,7 @@ public class WorldManager : MonoBehaviour
     private List<Voxel> voxels = new List<Voxel>();
 
     public delegate void OnAddVoxel();
-    public delegate void OnRemoveVoxel();
+    public delegate void OnRemoveVoxel(Voxel v, int index);
     public delegate void OnClearVoxels();
     private OnAddVoxel onAddVoxel;
     private OnRemoveVoxel onRemoveVoxel;
@@ -151,15 +151,16 @@ public class WorldManager : MonoBehaviour
             v.signals[i] = false;
         }
 
+        int index = instance.voxels.IndexOf(v);
         instance.voxels.Remove(v);
-        instance.onRemoveVoxel?.Invoke();
+        instance.onRemoveVoxel?.Invoke(v, index);
 
         // Doing it this way bc when I tried to do it not this way
         // C sharp would try to set the reference to null instead
         // of replacing the refernce with a null reference
         for (int i = 0; i < neighbors.Length; i++) {
             int reverse = (i%2 == 1) ? (i - 1) : (i + 1);
-            neighbors[i].adjacent[reverse] = null;
+            if (neighbors[i] != null) neighbors[i].adjacent[reverse] = null;
         }
 
         return v;

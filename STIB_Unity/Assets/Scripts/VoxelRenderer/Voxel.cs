@@ -54,6 +54,13 @@ public class Voxel
         signals[dir] = false;
     }
 
+    // Checks if this voxel has any power connected to it
+    public bool HasSignal() {
+        for (int i = 0; i < signals.Length; ++i)
+            if (signals[i]) return true;
+        return false;
+    }
+
     public virtual void UpdateSignal() { }
 
     public VOXEL_TYPE type;

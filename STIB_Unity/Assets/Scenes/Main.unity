@@ -264,6 +264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderingMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   renderingMaterial: {fileID: 2100000, guid: f1797bf11f0d04d4b95797de5c238feb, type: 2}
+  ledOnColor: {r: 0.24520881, g: 7.376153, b: 51.984146, a: 0}
 --- !u!4 &738088628
 Transform:
   m_ObjectHideFlags: 0
