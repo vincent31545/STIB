@@ -7,6 +7,9 @@ public class VoxelRenderer : MonoBehaviour
     public Mesh renderingMesh;
     public Material renderingMaterial;
 
+    [Header("Random Voxel Data")]
+    [ColorUsage(false, true)] public Color ledOnColor;
+
     private RenderParams renderParams;
     private Matrix4x4[] voxelMatrices;
     private Vector4[] voxelColors;
@@ -17,7 +20,10 @@ public class VoxelRenderer : MonoBehaviour
     }
     private void Start() {
         WorldManager.RegisterAddVoxelEvent(RefreshMatrices);
-        WorldManager.RegisterRemoveVoxelEvent(RefreshMatrices);
+        WorldManager.RegisterRemoveVoxelEvent((v, i) => {
+            voxelData.RemoveAt(i);
+            RefreshMatrices();
+        });
         WorldManager.RegisterClearVoxelsEvent(RefreshMatrices);
     }
 
@@ -45,5 +51,10 @@ public class VoxelRenderer : MonoBehaviour
     public void SetVoxData(Vector4 data, int voxelIndex) {
         voxelData[voxelIndex] = data;
         renderParams.matProps.SetVectorArray("_VoxelData", voxelData);
+    }
+    public void RefreshColorData() {
+        for (int i = 0; i < voxelMatrices.Length; i++)
+            voxelColors[i] = WorldManager.GetVoxel(i).GetVoxelColor();
+        renderParams.matProps.SetVectorArray("_InstanceColor", voxelColors);
     }
 }

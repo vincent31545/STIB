@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,10 +11,11 @@ public class Voxel_LED: Voxel {
 
     public override void Initialize() {
         base.Initialize();
-        SendSignal(false);
     }
+
+    private bool ledON = false;
   
-    public override Color GetVoxelColor() => Color.grey;
+    public override Color GetVoxelColor() => ledON ? WorldManager.instance.voxelRenderer.ledOnColor : Color.grey;
 
     public override void UpdateSignal() {
        for (int i = 0; i < 6; i++) {
@@ -21,11 +23,17 @@ public class Voxel_LED: Voxel {
             // Invert signal position
             // ie if block on the right outgoing then block on left incoming 
             if (adjacent[i].signals[ (i%2 == 1) ? (i-1) : (i+1)]) {
-                WorldManager.instance.voxelRenderer.SetVoxData(new Vector4(1, 0, 0, 0), WorldManager.GetVoxelIndex(this));
+                if (!ledON) {
+                    ledON = true;
+                    WorldManager.instance.voxelRenderer.RefreshColorData();
+                }
                 return;
             }
         } 
-        WorldManager.instance.voxelRenderer.SetVoxData(new Vector4(0, 0, 0, 0), WorldManager.GetVoxelIndex(this));
+        if (ledON) {
+            ledON = false;
+            WorldManager.instance.voxelRenderer.RefreshColorData();
+        }
     }
 }
 
