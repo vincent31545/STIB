@@ -33,7 +33,10 @@ public class BlockPlacer : MonoBehaviour
 
         placeControls = new ControlOption[numberKeys.Length];
         for (int i = 0; i < placeControls.Length; ++i) {
-            placeControls[i] = Instantiate(placeControlPrefab, placeControlParent);
+            if (i == placeControls.Length-1)
+                placeControls[0] = Instantiate(placeControlPrefab, placeControlParent);
+            else
+                placeControls[i+1] = Instantiate(placeControlPrefab, placeControlParent);
         }
 
         SelectBlockType(0, true);
@@ -47,7 +50,8 @@ public class BlockPlacer : MonoBehaviour
         scrollAccumulation -= Input.mouseScrollDelta.y;
         if (Mathf.Abs(scrollAccumulation) > 0.3f) {
             int i = blockType + (scrollAccumulation > 0 ? 1 : -1);
-            if (i >= 9) i = 0;
+            if (i > 6) i = 0;
+            if (i < 0) i = 6;
 
             SelectBlockType(i);
 
