@@ -28,16 +28,6 @@ public class Voxel_WIRE: Voxel {
             }
         }
         
-
-        // int direction = (forward%2 == 1) ? (forward - 1) : (forward + 1);
-        // if (adjacent[direction] == null) {
-        //     SendSignal(false);
-        //     return;
-        // }
-        // // x, -x, y, -y, z, -z
-        // if (adjacent[direction])
-
-        // This is Daniel previous code that just checks the current direction
         // if (adjacent[direction].signals[forward]) {
         //     SendSignal(true);
         //     return;
