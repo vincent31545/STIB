@@ -77,13 +77,11 @@ public class BlockPlacer : MonoBehaviour
 
             // Placing block
             if (Input.GetMouseButtonDown(1)) {
-                Debug.Log("ERROR: " + predictedPlacement);
                 WorldManager.AddVoxel((VOXEL_TYPE)blockType, predictedPlacement);
             } else if (Input.GetMouseButtonDown(0))
                 WorldManager.RemoveVoxel(selectedVoxel);
             // Rotating block
             else if (Input.GetKeyDown(KeyCode.R)) {
-                Debug.Log("ROTATE BLOCK ");
                 WorldManager.RotateVoxel(selectedVoxel);
             }
         }

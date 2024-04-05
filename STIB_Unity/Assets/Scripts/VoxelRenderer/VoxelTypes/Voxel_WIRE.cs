@@ -6,7 +6,7 @@ using UnityEngine;
 public class Voxel_WIRE: Voxel {
 
     public Voxel_WIRE(VOXEL_TYPE _type, Vector3Int _pos, Voxel[] _adjacent) : base(_type, _pos, _adjacent) {
-        Debug.Log("Created WIRE BLOCK");
+
     }
 
     public override void Initialize() {
