@@ -28,10 +28,6 @@ public class Voxel_WIRE: Voxel {
             }
         }
         
-        // if (adjacent[direction].signals[forward]) {
-        //     SendSignal(true);
-        //     return;
-        // } 
         SendSignal(false);
     }
 

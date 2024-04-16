@@ -128,7 +128,7 @@ public class WorldManager : MonoBehaviour
                 int index = (ydiff < 0) ? 0 : 1;
                 int reverse = (ydiff > 0) ? 0 : 1;
                 v.adjacent[index+2] = instance.voxels[i];
-                instance.voxels[i].adjacent[reverse+4] = v;
+                instance.voxels[i].adjacent[reverse+2] = v;
             }
             else if (xdiff == 0 && ydiff == 0 && Math.Abs(zdiff) == 1) {
                 int index = (zdiff < 0) ? 0 : 1;
