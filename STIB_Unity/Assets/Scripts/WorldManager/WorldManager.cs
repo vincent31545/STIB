@@ -105,6 +105,9 @@ public class WorldManager : MonoBehaviour
             case VOXEL_TYPE.AND:
                 v = new Voxel_AND(type, position, adj);
                 break;
+            case VOXEL_TYPE.SPLIT:
+                v = new Voxel_SPLIT(type, position, adj);
+                break;
             default:
                 v = new Voxel(VOXEL_TYPE.None, position, adj);
                 break;

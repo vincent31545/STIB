@@ -25,7 +25,7 @@ public class BlockPlacer : MonoBehaviour
     private int blockType;
     private float scrollAccumulation = 0;
     private ControlOption[] placeControls;
-    private KeyCode[] numberKeys = { KeyCode.Alpha0, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6 };
+    private KeyCode[] numberKeys = { KeyCode.Alpha0, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7};
 
     private void Start() {
         selectedDisplayInstance = Instantiate(selectedDisplayPrefab);
@@ -50,8 +50,8 @@ public class BlockPlacer : MonoBehaviour
         scrollAccumulation -= Input.mouseScrollDelta.y;
         if (Mathf.Abs(scrollAccumulation) > 0.3f) {
             int i = blockType + (scrollAccumulation > 0 ? 1 : -1);
-            if (i > 6) i = 0;
-            if (i < 0) i = 6;
+            if (i > 7) i = 0;
+            if (i < 0) i = 7;
 
             SelectBlockType(i);
 

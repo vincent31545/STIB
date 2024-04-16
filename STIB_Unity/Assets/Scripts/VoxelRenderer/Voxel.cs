@@ -89,4 +89,5 @@ public enum VOXEL_TYPE {
     NOT = 4,
     OR = 5,
     AND = 6,
+    SPLIT = 7
 }
