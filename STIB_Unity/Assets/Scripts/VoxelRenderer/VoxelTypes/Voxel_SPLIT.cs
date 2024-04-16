@@ -6,7 +6,7 @@ using UnityEngine;
 public class Voxel_SPLIT: Voxel {
 
     public Voxel_SPLIT(VOXEL_TYPE _type, Vector3Int _pos, Voxel[] _adjacent) : base(_type, _pos, _adjacent) {
-
+        Debug.Log("AZOKEFO");
     }
 
     public override void Initialize() {
@@ -19,7 +19,8 @@ public class Voxel_SPLIT: Voxel {
         // Checking all inputs
         
         for (int i = 0; i < 6; i++) {
-            if (adjacent[i] == null || i == forward) continue;
+            int backward = (forward%2 == 1) ? (forward-1) : (forward+1);
+            if (adjacent[i] == null || i == forward || i == backward) continue;
             // Invert signal position
             // ie if block on the right outgoing then block on left incoming 
             if (adjacent[i].signals[ (i%2 == 1) ? (i-1) : (i+1)]) {
@@ -27,7 +28,7 @@ public class Voxel_SPLIT: Voxel {
                     signals[j] = false;
                 }
                 signals[forward] = true;
-                signals[(forward%2 == 1) ? (i-1) : (i+1)] = true;
+                signals[backward] = true;
                 // Gives the red circle texture
                 WorldManager.instance.voxelRenderer.SetVoxData(new Vector4(1, 0, 0, 0), WorldManager.GetVoxelIndex(this));
                 return;
