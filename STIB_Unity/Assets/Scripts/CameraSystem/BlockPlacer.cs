@@ -88,6 +88,9 @@ public class BlockPlacer : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.R)) {
                 WorldManager.RotateVoxel(selectedVoxel);
             }
+            else if (Input.GetKeyDown(KeyCode.Q)) {
+                WorldManager.TurnOnVoxel(selectedVoxel);
+            }
         }
         else {
             selectedVoxel = null;

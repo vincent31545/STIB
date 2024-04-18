@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Voxel_SEND: Voxel {
 
+    public on = false;
+
     public Voxel_SEND(VOXEL_TYPE _type, Vector3Int _pos, Voxel[] _adjacent) : base(_type, _pos, _adjacent) {
 
     }
@@ -16,6 +18,6 @@ public class Voxel_SEND: Voxel {
     public override Color GetVoxelColor() => Color.red;
 
     public override void UpdateSignal() {
-        SendSignal(true);
+        SendSignal(on);
     }
 }

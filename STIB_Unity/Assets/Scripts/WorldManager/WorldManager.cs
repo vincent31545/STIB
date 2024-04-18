@@ -174,4 +174,7 @@ public class WorldManager : MonoBehaviour
         v.forward++;
         if (v.forward >= 6) v.forward = 0;
     }
+
+    public static void TurnOnVoxel(Voxel v) {
+    }
 }
