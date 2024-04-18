@@ -176,5 +176,8 @@ public class WorldManager : MonoBehaviour
     }
 
     public static void TurnOnVoxel(Voxel v) {
+        if (v.type == VOXEL_TYPE.SEND) {
+            v.on = !v.on;
+        }
     }
 }

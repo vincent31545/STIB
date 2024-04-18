@@ -68,6 +68,9 @@ public class Voxel
     public Voxel[] adjacent;
     public bool[] signals;
 
+    // Only for SEND BLOCK
+    public bool on;
+
     public bool invincible = false;
 
     // x, -x, y, -y, z, -z
