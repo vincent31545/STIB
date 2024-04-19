@@ -4,6 +4,17 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+
+[Serializable]
+class SaveData
+{
+    public Vector3[] positions;
+    public Vector3[] forwards;
+    public VOXEL_TYPE[] types;
+}
 
 public class WorldManager : MonoBehaviour
 {
@@ -179,5 +190,18 @@ public class WorldManager : MonoBehaviour
         if (v.type == VOXEL_TYPE.SEND) {
             v.on = !v.on;
         }
+    }
+    public static void SaveGame()
+    {
+        BinaryFormatter bf = new BinaryFormatter(); 
+        FileStream file = File.Create(Application.persistentDataPath 
+                    + "/world.dat"); 
+        SaveData data = new SaveData();
+        data.positions = positions;
+        data.forwards = forwards;
+        data.types = types;
+        bf.Serialize(file, data);
+        file.Close();
+        Debug.Log("Game data saved!");
     }
 }

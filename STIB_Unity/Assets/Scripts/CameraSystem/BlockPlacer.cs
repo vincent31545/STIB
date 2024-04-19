@@ -88,6 +88,7 @@ public class BlockPlacer : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.R)) {
                 WorldManager.RotateVoxel(selectedVoxel);
             }
+            // Turning on signal block
             else if (Input.GetKeyDown(KeyCode.F)) {
                 WorldManager.TurnOnVoxel(selectedVoxel);
             }
