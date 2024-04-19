@@ -47,6 +47,14 @@ public class BlockPlacer : MonoBehaviour
             if (Input.GetKeyDown(numberKeys[i]))
                 SelectBlockType(i);
 
+        // Save
+        if (Input.GetKeyDown(KeyCode.O)) {
+            WorldManager.SaveGame();
+        }
+        // Load
+        else if (Input.GetKeyDown(KeyCode.P)) {
+            WorldManager.LoadGame();
+        }
         scrollAccumulation -= Input.mouseScrollDelta.y;
         if (Mathf.Abs(scrollAccumulation) > 0.3f) {
             int i = blockType + (scrollAccumulation > 0 ? 1 : -1);
@@ -92,10 +100,7 @@ public class BlockPlacer : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.F)) {
                 WorldManager.TurnOnVoxel(selectedVoxel);
             }
-            // Save
-            else if (Input.GetKeyDown(KeyCode.P)) {
-                WorldManager.SaveGame();
-            }
+
         }
         else {
             selectedVoxel = null;

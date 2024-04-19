@@ -201,6 +201,7 @@ public class WorldManager : MonoBehaviour
         List<VOXEL_TYPE> types = new List<VOXEL_TYPE>();
 
         for (int i = 0; i < GetVoxelCount(); ++i) {
+            if (instance.voxels[i].type == VOXEL_TYPE.None) continue;
             xs.Add(instance.voxels[i].position.x);
             ys.Add(instance.voxels[i].position.y);
             zs.Add(instance.voxels[i].position.z);
@@ -220,5 +221,30 @@ public class WorldManager : MonoBehaviour
         bf.Serialize(file, data);
         file.Close();
         Debug.Log("Game data saved!");
+    }
+    public static void LoadGame() {
+
+        Debug.Log("FLAG B");
+        if (File.Exists(Application.persistentDataPath 
+                    + "/world.dat")) {
+            Debug.Log("FLAG A");
+            BinaryFormatter bf = new BinaryFormatter();
+            Debug.Log("Going to open file!");
+            FileStream file = 
+                    File.Open(Application.persistentDataPath 
+                    + "/world.dat", FileMode.Open);
+            Debug.Log("Opened File!");
+            SaveData data = (SaveData)bf.Deserialize(file);
+            file.Close();
+            Debug.Log("Got data!");
+
+            for (int i = 0; i < data.xs.Length; i++) {
+                AddVoxel(data.types[i], new Vector3Int(data.xs[i], data.ys[i], data.zs[i]));
+            }
+
+            Debug.Log("Game data loaded!");
+        }
+        else
+            Debug.LogError("There is no save data!");
     }
 }
