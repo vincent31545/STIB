@@ -92,6 +92,10 @@ public class BlockPlacer : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.F)) {
                 WorldManager.TurnOnVoxel(selectedVoxel);
             }
+            // Save
+            else if (Input.GetKeyDown(KeyCode.P)) {
+                WorldManager.SaveGame();
+            }
         }
         else {
             selectedVoxel = null;

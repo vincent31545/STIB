@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
-using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
-[Serializable]
+[System.Serializable]
 class SaveData
 {
-    public Vector3[] positions;
-    public Vector3[] forwards;
+    public int[] xs;
+    public int[] ys;
+    public int[] zs;
+    public int[] forwards;
     public VOXEL_TYPE[] types;
 }
 
@@ -191,15 +192,31 @@ public class WorldManager : MonoBehaviour
             v.on = !v.on;
         }
     }
-    public static void SaveGame()
-    {
+    public static void SaveGame() {
+        
+        List<int> xs = new List<int>();
+        List<int> ys = new List<int>();
+        List<int> zs = new List<int>();
+        List<int> forwards = new List<int>();
+        List<VOXEL_TYPE> types = new List<VOXEL_TYPE>();
+
+        for (int i = 0; i < GetVoxelCount(); ++i) {
+            xs.Add(instance.voxels[i].position.x);
+            ys.Add(instance.voxels[i].position.y);
+            zs.Add(instance.voxels[i].position.z);
+            forwards.Add(instance.voxels[i].forward);
+            types.Add(instance.voxels[i].type);
+        }
+
         BinaryFormatter bf = new BinaryFormatter(); 
         FileStream file = File.Create(Application.persistentDataPath 
                     + "/world.dat"); 
         SaveData data = new SaveData();
-        data.positions = positions;
-        data.forwards = forwards;
-        data.types = types;
+        data.xs = xs.ToArray();
+        data.ys = ys.ToArray();
+        data.zs = zs.ToArray();
+        data.forwards = forwards.ToArray();
+        data.types = types.ToArray();
         bf.Serialize(file, data);
         file.Close();
         Debug.Log("Game data saved!");
